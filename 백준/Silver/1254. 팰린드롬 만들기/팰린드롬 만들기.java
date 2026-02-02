@@ -6,39 +6,27 @@ public class Main {
 	// 회문인지 체크해주는 메서드
 	public static boolean isOk(List addArr) {
 		// 만약 길이가 홀수면 mid -1 부터 0까지 firstfix, mid부터 List길이까지 endfix
-		if(addArr.size() % 2 == 0) {
-			String firfix = "";
-			String endfix = "";
-			for(int i = (addArr.size() / 2) - 1; i >= 0; i--) {
-				firfix += addArr.get(i);
-			}
-			
-			for(int i = (addArr.size() / 2); i < addArr.size(); i++) {
-				endfix += addArr.get(i);
-			}
-			// firstfix와 endfix가 같다면 true반환 아니면 false반환
-			if(firfix.equals(endfix))
-				return true;
-			else
-				return false;
+		String firfix = "";
+		String endfix = "";
+		for(int i = (addArr.size() / 2) - 1; i >= 0; i--) {
+			firfix += addArr.get(i);
 		}
 		// 만약 길이가 짝수면 mid -1 부터 0까지 firstfix, mid + 1부터 List길이까지 endfix
-		else{
-			String firfix = "";
-			String endfix = "";
-			for(int i = (addArr.size() / 2) - 1; i >= 0; i--) {
-				firfix += addArr.get(i);
-			}
-			
+		if (addArr.size() % 2 == 0) {
+			for(int i = (addArr.size() / 2); i < addArr.size(); i++) {
+				endfix += addArr.get(i);
+			}	
+		} else {
 			for(int i = (addArr.size() / 2) + 1; i < addArr.size(); i++) {
 				endfix += addArr.get(i);
 			}
-			// firstfix와 endfix가 같다면 true반환 아니면 false반환
-			if(firfix.equals(endfix))
-				return true;
-			else
-				return false;
 		}
+		// firstfix와 endfix가 같다면 true반환 아니면 false반환
+		if(firfix.equals(endfix))
+			return true;
+		else
+			return false;
+		
 		
 	}
 	public static void main(String[] args) {
