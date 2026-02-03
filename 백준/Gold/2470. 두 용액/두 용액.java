@@ -3,32 +3,61 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int N = sc.nextInt();
-		int[] arr = new int[N];
-		for(int i = 0; i < N; i++) {
-			arr[i] = sc.nextInt();
+	public static void main(String[] args)throws Exception {
+		// TODO Auto-generated method stub
+		Scanner sc= new Scanner(System.in);
+		int n = sc.nextInt();
+		long arr[] = new long[n];
+		
+		for(int i=0; i<n; i++)
+		{
+			long num =sc.nextLong();
+			arr[i] = num;
 		}
-		int s = 0;
-		int e = N-1;
-		int min = Integer.MAX_VALUE;
-		int left = 0;
-		int right = 0;
 		Arrays.sort(arr);
-		while(s<e) {
-			long sum = arr[s] + arr[e];
-			if(min > Math.abs(arr[s] + arr[e])) {
-				left = s;
-				right = e;
-				min = Math.abs(arr[s] + arr[e]);
-			}else if(sum < min) {
+		long target1 = 10000000000L;
+		long target2 = 10000000000L;
+		long distance = 10000000000L;
+		int s = 0, e = n-1;
+		while(true)
+		{
+			if(s==e)
+			{
+				break;
+			}
+			long temp = arr[s]+arr[e];
+			if(temp < 0)
+			{
+				if(Math.abs(temp) < distance)
+				{
+					distance = Math.abs(temp);
+					target1 = arr[s];
+					target2 = arr[e];
+				}
 				s++;
-			}else {
+			}
+			else if(temp == 0)
+			{
+				distance  = 0;
+				target1 = arr[s];
+				target2 = arr[e];
+				break;
+			}
+			else
+			{
+				if(Math.abs(temp) < distance)
+				{
+					distance = Math.abs(temp);
+					target1 = arr[s];
+					target2 = arr[e];
+				}
 				e--;
 			}
+			
 		}
+		System.out.println(target1+" " + target2);
 		
-		System.out.println(arr[left] + " " + arr[right]);
+		
 	}
+
 }
