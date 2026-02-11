@@ -13,7 +13,6 @@ public class Main {
         for(int i =0; i < N; i++) {
         	arr[i] = sc.nextInt();
         }
-        int j = 0;
         for(int i = 0; i < N; i++) {
         	int left = i-1;
         	int right = i+1;
