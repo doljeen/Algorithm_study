@@ -1,47 +1,61 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class Main {
-	static int[][] arr;
-	static int W, G;
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		arr = new int[N][N];
-		for(int i = 0; i < N; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < N; j++) {
-				arr[i][j] = Integer.parseInt(st.nextToken());
+
+	static int m[][];
+	static int n;
+	static int bcnt;
+	static int wcnt;
+	
+	static void cut(int startx, int starty, int size)
+	{
+		int wsum = 0;
+		for(int i=startx; i < startx+size; i++)
+		{
+			for(int j=starty; j <starty+size; j++)
+			{
+				if(m[i][j] == 0)
+				{
+					wsum++;
+				}
 			}
 		}
-		div(0, 0, N);
-		System.out.println(W + "\n" + G);
-
+		
+		if(wsum == size*size)
+		{
+			wcnt++;
+			return;
+		}
+		
+		if(wsum == 0)
+		{
+			bcnt++;
+			return;
+		}
+		cut(startx,starty,size/2);
+		cut(startx,starty+size/2, size/2);
+		cut(startx+size/2,starty, size/2);
+		cut(startx+size/2,starty+size/2, size/2);
+		
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();
+		m= new int[n][n];
+		
+		for(int i=0; i<n; i++)
+		{
+			for(int j=0; j<n; j++)
+			{
+				m[i][j] = sc.nextInt();
+			}
+		}
+		
+		cut(0,0,n);
+		System.out.println(wcnt);
+		System.out.println(bcnt);
 	}
 	
-	public static void div(int r, int c, int size) {
-		int sum = 0;
-		
-		for(int i = r; i < r+size; i++) {
-			for(int j = c; j < c+size; j++) {
-				sum += arr[i][j];
-			}
-		}
-		
-		if(sum == size*size) {
-			G++;
-		}else if(sum == 0) {
-			W++;
-		}else {
-			int half = size / 2;
-			div(r, c, half);
-			div(r, c+half, half);
-			div(r+half, c, half);
-			div(r+half, c+half, half);
-		}
-		
-	}
 
 }
