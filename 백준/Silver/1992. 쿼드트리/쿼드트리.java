@@ -1,49 +1,61 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
-	static int[][] arr;
-	static StringBuilder sb;
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		arr = new int[N][N];
-		sb = new StringBuilder();
-		for(int i = 0; i < N; i++) {
-			String str = br.readLine();
-			char[] carr = str.toCharArray();
-			for(int j = 0; j < N; j++) {
-				arr[i][j] = carr[j] - '0';
-			}
-		}
-		div(0, 0, N);
-		System.out.println(sb);
-	}
 	
-	public static void div(int r, int c, int size) {
-		int sum = 0;
-		for(int i = r; i < r+size; i++) {
-			for(int j = c; j < c+size; j++) {
-				sum += arr[i][j];
+	static char[][] m;
+	
+	static void cut(int startx, int starty,int size)
+	{
+		int zero = 0;
+		for(int i=startx; i<startx+size; i++)
+		{
+			for(int j=starty; j<starty+size;j++)
+			{
+				if(m[i][j] == '0')
+				{
+					zero++;
+				}
 			}
 		}
-		
-		if(sum == size*size) {
-			sb.append(1);
-		} else if(sum == 0) {
-			sb.append(0);
-		} else {
-			int half = size /2;
-			sb.append("(");
-			div(r, c, half);
-			div(r, c+half, half);
-			div(r+half, c, half);
-			div(r+half, c+half, half);
-			sb.append(")");
+		if(zero == size*size)
+		{
+			System.out.print(0);
+			return;
 		}
+		if(zero == 0)
+		{
+			System.out.print(1);
+			return;
+		}
+		int half = size/2;
+		System.out.print("(");
+		cut(startx, starty, half);
+		cut(startx, starty+half, half);
+		cut(startx+half, starty, half);
+		cut(startx+half, starty+half, half);
+		System.out.print(")");
+
 		
+	}
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		// 한변 길이
+		int n= sc.nextInt();
+		sc.nextLine();
+		// 0,1 숫자 표시 맵
+		m = new char[n][n];
+
+		for(int i=0; i<n; i++)
+		{
+			String line = sc.nextLine();
+			for(int j=0; j<line.length();j++)
+			{
+				m[i][j] = line.charAt(j);
+			}
+		}
+		cut(0, 0, n);
 	}
 
 }
