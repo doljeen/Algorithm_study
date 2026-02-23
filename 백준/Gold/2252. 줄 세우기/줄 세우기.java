@@ -23,7 +23,7 @@ public class Main {
 		List<Integer>[] list = new ArrayList[N];
 		for (int i=0;i<N;i++) list[i] = new ArrayList<Integer>();
 		
-		// 순서 3 0개인거 빼면서 출력하면서 0개 도달하면 큐에 넣기싫으면 안넣기
+		// 순서 3 0개인거 뺘면서 출력하면서 0개 도달하면 큐에 넣기싫으면 안넣기
 		for(int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int A = Integer.parseInt(st.nextToken())-1;
@@ -41,12 +41,11 @@ public class Main {
 		while(!queue.isEmpty()) {
 			int current = queue.poll();
 			System.out.print(current + 1 + " ");
-			for(int i = 0; i < list[current].size(); i++) {
-				arr[list[current].get(i)]--;				
-				if(arr[list[current].get(i)] == 0) 
-					queue.add(list[current].get(i));
+			for (int next : list[current]) {
+				arr[next]--;
+				if (arr[next] == 0)
+					queue.add(next);
 			}
-			
 		}
 	}
 }
