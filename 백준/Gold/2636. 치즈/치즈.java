@@ -26,9 +26,8 @@ public class Main {
 				arr[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		int stop = 1;
-		while(stop > 0) {
-			stop = 0;
+		while(true) {
+			int stop = 0;
 			visited = new boolean[N][M];
 			for(int i = 0; i < N; i++) {
 				for(int j = 0; j < M; j++) {
@@ -37,13 +36,16 @@ public class Main {
 					}
 				}
 			}
+			if(stop == 0) break;
 			int tmp = bfs();
+			cnt++;
 			if(min > tmp)min = tmp;
 		}
-		System.out.println(cnt-1 + " " + min);
+		System.out.println(cnt);
+		System.out.println(min);
 	}
+	
 	public static int bfs() {
-		cnt++;
 		int result = 0;
 		visited[0][0] = true;
 		Queue<int[]> queue = new ArrayDeque<>();
