@@ -12,29 +12,26 @@ public class Main {
 	public static int[][] map;
 	public static int[] dx = {0, 0, -1, 1, 1, -1, 1, -1};
 	public static int[] dy = {1, -1, 0, 0, 1, 1, -1, -1};
-	public static List<Integer> Srow, Scol;
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new int[N][M];
-		Srow = new ArrayList<>();
-		Scol = new ArrayList<>();
 		int max= 0;
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
-				if(map[i][j] == 0) {
-					Srow.add(i);
-					Scol.add(j);
-				}
 			}
 		}
-		for(int i = 0; i < Srow.size(); i++) {
-			int tmp = bfs(Srow.get(i), Scol.get(i));
-			if(max < tmp) max = tmp;
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < M; j++) {
+				if(map[i][j] == 0) {
+					int tmp = bfs(i, j);
+					if(max < tmp) max = tmp;					
+				}
+			}
 		}
 		System.out.println(max);
 	}
