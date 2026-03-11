@@ -1,32 +1,43 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int N = Integer.parseInt(st.nextToken());
-		int K = Integer.parseInt(st.nextToken());
-		Map<Long, Long> prefix = new HashMap<>();
-		st = new StringTokenizer(br.readLine());
-		long sum = 0;
-		long cnt = 0;
-		prefix.put(sum, 1L);
-		for(int i = 0; i < N; i++) {
-			int tmp = Integer.parseInt(st.nextToken());
-			sum += tmp;
-			if(prefix.containsKey(sum - K)) {
-				cnt += prefix.get(sum-K);
-			}
-			prefix.put(sum, prefix.getOrDefault(sum, 0L)+1);
-		}
-		
-		System.out.println(cnt);
-	}
+    static final int OFFSET = 20000000;
 
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+
+        int[] arr = new int[N];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < N; i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int[] count = new int[OFFSET * 2 + 1];
+
+        int sum = 0;
+        long answer = 0;
+
+        count[OFFSET] = 1;
+
+        for(int i = 0; i < N; i++){
+            sum += arr[i];
+
+            int target = sum - K;
+
+            if(target + OFFSET >= 0 && target + OFFSET < count.length){
+                answer += count[target + OFFSET];
+            }
+
+            count[sum + OFFSET]++;
+        }
+
+        System.out.println(answer);
+    }
 }
