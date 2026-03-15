@@ -44,12 +44,11 @@ public class Main {
                 int nr = curR + dx[i];
                 int nc = curC + dy[i];
                 if(nr < 0 || nr >= M || nc < 0 || nc >= N || visited[nr][nc]) continue;
+                visited[nr][nc] = true;
                 if(map[nr][nc] == 0) {
                     dq.addFirst(new int[] {nr, nc, weight});
-                    visited[nr][nc] = true;
                 }else {
                     dq.addLast(new int[] {nr, nc, weight+1});
-                    visited[nr][nc] = true;
                 }
             }
         }
