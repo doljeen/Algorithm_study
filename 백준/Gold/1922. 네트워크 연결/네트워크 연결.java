@@ -1,73 +1,76 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
+	public static int V, E;
+	public static pair[] arr;
+	public static int[] parents;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		V = Integer.parseInt(br.readLine());
+		E = Integer.parseInt(br.readLine());
+		arr = new pair[E];
+		parents = new int[V];
+		for(int i = 0; i < E; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int start = Integer.parseInt(st.nextToken())-1;
+			int end = Integer.parseInt(st.nextToken())-1;
+			int value = Integer.parseInt(st.nextToken());
+			arr[i] = new pair(start, end, value);
+		}
+		Arrays.sort(arr);
+		makeSet();
+		int result = 0;
+		int cnt = 0;
+		for(pair p : arr) {
+			if(union(p.start, p.end)) {
+				result += p.weight;
+				if(++cnt == V-1) break;
+			}
+		}
+		System.out.println(result);
+		
+		
+	}
+	
+	public static void makeSet() {
+		for(int i = 0; i < V; i++) {
+			parents[i] = i;
+		}
+	}
+	
+	public static int findSet(int a) {
+		if(a == parents[a]) return a;
+		return parents[a] = findSet(parents[a]);
+	}
+	
+	public static boolean union(int a, int b) {
+		int aRoot = findSet(a);
+		int bRoot = findSet(b);
+		if(aRoot == bRoot) return false;
+		parents[bRoot] = aRoot;
+		return true;
+	}
+	
+	public static class pair implements Comparable<pair>{
+		int start;
+		int end;
+		int weight;
+		
+		public pair(int start, int end, int weight){
+			this.start = start;
+			this.end = end;
+			this.weight = weight;
+		}
 
-    static int N;
-    static int E;
-    static Node[] vertices;
-    static int[] parent;
+		@Override
+		public int compareTo(pair o) {
+			return Integer.compare(this.weight, o.weight);
+		}
+		
+	}
 
-
-    static int findParent(int x) {
-        if (x == parent[x]) return x;
-        return parent[x] = findParent(parent[x]);
-    }
-
-    static boolean union(int a, int b) {
-        a = findParent(a);
-        b = findParent(b);
-
-        if (a == b) return false;
-
-        if (a < b) parent[b] = a;
-        else parent[a] = b;
-        return true;
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        N = Integer.parseInt(st.nextToken());
-        E = Integer.parseInt(br.readLine().trim());
-
-        vertices = new Node[E];
-        parent = new int[N + 1];
-
-        for (int i = 1; i <= N; i++) parent[i] = i;
-
-        for (int i = 0; i < E; i++) {
-            st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
-            int cost = Integer.parseInt(st.nextToken());
-            vertices[i] = new Node(u, v, cost);
-        }
-
-        Arrays.sort(vertices, (a, b) -> Integer.compare(a.cost, b.cost));
-
-        long maxWeight = 0;
-
-        for (int i = 0; i < E; i++) {
-            int a = vertices[i].u;
-            int b = vertices[i].v;
-            if (union(a, b)) {
-                maxWeight += vertices[i].cost;
-            }
-        }
-        
-        System.out.println(maxWeight);
-    }
-
-    static class Node {
-        int u;
-        int v;
-        int cost;
-        Node(int u, int v, int cost) {
-            this.u = u;
-            this.v = v;
-            this.cost = cost;
-        }
-    }
 }
