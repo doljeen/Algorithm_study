@@ -32,11 +32,6 @@ public class Main {
     }
     public static int bfs() {
         Deque<int[]> dq = new ArrayDeque<>();
-        int dp[][] = new int[M][N];
-        for(int i = 0; i < M; i++) {
-            Arrays.fill(dp[i], Integer.MAX_VALUE);
-        }
-        dp[0][0] = 0;
         boolean[][] visited = new boolean[M][N];
         dq.addFirst(new int[] {0, 0, 0});
         while(!dq.isEmpty()){
@@ -44,22 +39,20 @@ public class Main {
             int curR = cur[0];
             int curC = cur[1];
             int weight = cur[2];
-            if(curR == M-1 && curC == N-1) break;
+            if(curR == M-1 && curC == N-1) return weight;
             for(int i = 0; i < 4; i++) {
                 int nr = curR + dx[i];
                 int nc = curC + dy[i];
-                if(nr < 0 || nr >= M || nc < 0 || nc >= N || visited[nr][nc] || (dp[nr][nc] < weight + map[nr][nc])) continue;
+                if(nr < 0 || nr >= M || nc < 0 || nc >= N || visited[nr][nc]) continue;
                 if(map[nr][nc] == 0) {
-                    dp[nr][nc] = weight;
                     dq.addFirst(new int[] {nr, nc, weight});
                     visited[nr][nc] = true;
                 }else {
-                    dp[nr][nc] = weight+1;
                     dq.addLast(new int[] {nr, nc, weight+1});
                     visited[nr][nc] = true;
                 }
             }
         }
-        return dp[M-1][N-1];
+        return -1;
     }
 }
