@@ -1,96 +1,70 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
+	public static int K, W, H;
+	public static int[][] map;
+	public static boolean[][][] visited;
+	public static int[] dx = {1, -1, 0, 0};
+	public static int[] dy = {0, 0, -1, 1};
+	public static int[] ddx = {-1, -2, -1, -2, 1, 2, 1, 2};
+	public static int[] ddy = {2, 1, -2, -1, 2, 1, -2, -1};
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		K = Integer.parseInt(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		W = Integer.parseInt(st.nextToken());
+		H = Integer.parseInt(st.nextToken());
+		map = new int[H][W];
+		visited = new boolean[H][W][K+1];
+		for(int i = 0; i < H; i++) {
+			st = new StringTokenizer(br.readLine());
+			for(int j = 0; j < W; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		int result = bfs();
+		System.out.println(result);
+	}
+	
+	public static int bfs() {
+		Queue<int[]> queue = new ArrayDeque<>();
+		queue.add(new int[] {0, 0, 0, K});
+		visited[0][0][K] = true;
+		while(!queue.isEmpty()) {
+			int[] cur = queue.poll();
+			int curR = cur[0];
+			int curC = cur[1];
+			int dist = cur[2];
+			int state = cur[3];
+			if(curR == H-1 && curC == W-1) return dist;
+			for(int i = 0; i < 4; i++) {
+				int nr = curR + dx[i];
+				int nc = curC + dy[i];
+				if(nr < 0 || nr >= H || nc < 0 || nc >=W || visited[nr][nc][state]) continue;
+				if(map[nr][nc] == 1) continue;
+				else {
+					visited[nr][nc][state] = true;
+					queue.add(new int[] {nr, nc, dist+1, state});
+				}
+			}
+			if(state > 0) {
+				for(int k = 0; k < 8; k++) {
+					int nnr = curR + ddx[k];
+					int nnc = curC + ddy[k];
+					if(nnr < 0 || nnr >= H || nnc < 0 || nnc >= W || visited[nnr][nnc][state-1] || map[nnr][nnc] == 1) continue;
+					visited[nnr][nnc][state-1] = true;
+					queue.add(new int[] {nnr, nnc, dist+1, state-1});
+				}
+			} 
+			
+				
+		}
+		return -1;
+	}
 
-    static int k, w, h;
-    static int[][] arr;
-    static int[] dy = {0, 1, 0, -1};
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] hdy = {-1, 1, 2, 2, 1, -1, -2, -2};
-    static int[] hdx = {-2, -2, -1, 1, 2, 2, 1, -1};
-    static int[][][] visited;
-    static int ans;
-    		
-    static int bfs() {
-    	Queue<int[]> q = new ArrayDeque<>();
-    	q.add(new int[] {0, 0, 0, 0});
-    	
-    	while(!q.isEmpty()) {
-    		int cur[] = q.poll();
-    		int y = cur[0];
-    		int x = cur[1];
-    		int cnt = cur[2];
-    		int dist = cur[3];
-    		
-    		if (y == h - 1 && x == w - 1) {
-    			return dist;
-    		}
-    		//일반 이동
-    		for (int i = 0; i < 4; i++) {
-    			int ny = y + dy[i];
-    			int nx = x + dx[i];
-    			
-    			if (ny < 0 || nx < 0 || ny >= h || nx >= w) continue;
-    			
-    			if (arr[ny][nx] == 1) continue;
-    			
-    			if (visited[ny][nx][cnt] > dist + 1) {
-    				visited[ny][nx][cnt] = dist + 1;
-    				q.add(new int[] {ny, nx, cnt, dist + 1});
-    			}
-    		}
-    		
-    		//말 이동
-    		if (cnt < k) {
-        		for (int i = 0; i < 8; i++) {
-        			int ny = y + hdy[i];
-        			int nx = x + hdx[i];
-        			
-        			if (ny < 0 || nx < 0 || ny >= h || nx >= w) continue;
-        			
-        			if (arr[ny][nx] == 1) continue;
-        			
-        			if (visited[ny][nx][cnt + 1] > dist + 1) {
-        				visited[ny][nx][cnt + 1] = dist + 1;
-        				q.add(new int[] {ny, nx, cnt + 1, dist + 1});
-        			}
-        		}
-    		}
-    	}
-    	
-    	return -1;
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        k = Integer.parseInt(st.nextToken());
-        
-        st = new StringTokenizer(br.readLine());
-        w = Integer.parseInt(st.nextToken());
-        h = Integer.parseInt(st.nextToken());
-        
-        arr = new int[h][w];
-        visited = new int[h][w][k + 1];
-        
-        for (int i = 0; i < h; i++) {
-        	for (int j = 0; j < w; j++) {
-        		Arrays.fill(visited[i][j], Integer.MAX_VALUE);
-        	}
-        }
-        
-        for (int i = 0; i < h; i++) {
-        	st = new StringTokenizer(br.readLine());
-        	for (int j = 0; j < w; j++) {
-        		arr[i][j] = Integer.parseInt(st.nextToken());
-        	}
-        }
-        
-        ans = bfs();
-        
-        System.out.println(ans);
-        
-    }
-    
 }
