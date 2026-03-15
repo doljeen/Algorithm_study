@@ -35,7 +35,7 @@ public class Main {
         boolean[][] visited = new boolean[M][N];
         dq.addFirst(new int[] {0, 0, 0});
         while(!dq.isEmpty()){
-            int[] cur = dq.pollFirst();
+            int[] cur = dq.poll();
             int curR = cur[0];
             int curC = cur[1];
             int weight = cur[2];
